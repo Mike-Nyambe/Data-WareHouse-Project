@@ -59,3 +59,5 @@ FROM bronze.crm_sales_details;
 PRINT '>> Rows loaded into silver.crm_sales_details: '
     + CAST(@@ROWCOUNT AS NVARCHAR);
 GO
+
+

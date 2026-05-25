@@ -22,11 +22,14 @@
  Run as:      Read-only. Execute AFTER proc_load_silver.sql.
 
   Note:        Sections are added as Silver transformations are built out.
-               Current sections:
-                 * silver.crm_cust_info
-                 * silver.crm_prd_info
-                 * silver.crm_sales_details
-===============================================================================
+                 Current sections:
+                   * silver.crm_cust_info
+                   * silver.crm_prd_info
+                   * silver.crm_sales_details
+                   * silver.erp_cust_az12
+                   * silver.erp_loc_a101
+                   * silver.erp_px_cat_g1v2
+ ===============================================================================
 */
 
 USE KyinduDataWarehouse;
@@ -187,4 +190,100 @@ WHERE sls_sales != sls_quantity * sls_price;
 -- Audit column populated
 -- Expectation: No rows
 SELECT * FROM silver.crm_sales_details WHERE dwh_load_date IS NULL;
+
+
+-- =============================================================================
+-- silver.erp_cust_az12
+-- =============================================================================
+
+-- Duplicate or NULL primary key (cid)
+-- Expectation: No rows
+SELECT
+    cid,
+    COUNT(*) AS dup_count
+FROM silver.erp_cust_az12
+GROUP BY cid
+HAVING COUNT(*) > 1 OR cid IS NULL;
+
+-- Whitespace check
+-- Expectation: No rows
+SELECT cid FROM silver.erp_cust_az12 WHERE cid != TRIM(cid);
+
+-- Birth date sanity — no future dates or older than 120 years
+-- Expectation: No rows
+SELECT *
+FROM silver.erp_cust_az12
+WHERE bdate > GETDATE()
+   OR bdate < DATEADD(YEAR, -120, GETDATE());
+
+-- Standardized gender — only the expanded forms should appear
+-- Expectation: No rows
+SELECT DISTINCT gen
+FROM silver.erp_cust_az12
+WHERE gen NOT IN ('Male', 'Female', 'n/a')
+   OR gen IS NULL;
+
+-- Audit column populated
+-- Expectation: No rows
+SELECT * FROM silver.erp_cust_az12 WHERE dwh_load_date IS NULL;
+
+
+-- =============================================================================
+-- silver.erp_loc_a101
+-- =============================================================================
+
+-- Duplicate or NULL primary key (cid)
+-- Expectation: No rows
+SELECT
+    cid,
+    COUNT(*) AS dup_count
+FROM silver.erp_loc_a101
+GROUP BY cid
+HAVING COUNT(*) > 1 OR cid IS NULL;
+
+-- Whitespace check
+-- Expectation: No rows
+SELECT cid   FROM silver.erp_loc_a101 WHERE cid   != TRIM(cid);
+SELECT cntry FROM silver.erp_loc_a101 WHERE cntry != TRIM(cntry);
+
+-- Standardized countries — no raw codes, empty strings, or NULLs should remain
+-- Expectation: No rows
+SELECT DISTINCT cntry
+FROM silver.erp_loc_a101
+WHERE cntry IN ('US', 'USA', 'DE', '')
+   OR cntry IS NULL;
+
+-- Audit column populated
+-- Expectation: No rows
+SELECT * FROM silver.erp_loc_a101 WHERE dwh_load_date IS NULL;
+
+-- Profiling
+SELECT cntry, COUNT(*) AS row_count
+FROM silver.erp_loc_a101 GROUP BY cntry;
+
+
+-- =============================================================================
+-- silver.erp_px_cat_g1v2
+-- =============================================================================
+
+-- Duplicate or NULL primary key (id)
+-- Expectation: No rows
+SELECT
+    id,
+    COUNT(*) AS dup_count
+FROM silver.erp_px_cat_g1v2
+GROUP BY id
+HAVING COUNT(*) > 1 OR id IS NULL;
+
+-- Whitespace check
+-- Expectation: No rows
+SELECT id          FROM silver.erp_px_cat_g1v2 WHERE id          != TRIM(id);
+SELECT cat         FROM silver.erp_px_cat_g1v2 WHERE cat         != TRIM(cat);
+SELECT subcat      FROM silver.erp_px_cat_g1v2 WHERE subcat      != TRIM(subcat);
+SELECT maintenance FROM silver.erp_px_cat_g1v2 WHERE maintenance != TRIM(maintenance);
+
+-- Audit column populated
+-- Expectation: No rows
+SELECT * FROM silver.erp_px_cat_g1v2 WHERE dwh_load_date IS NULL;
+
 
