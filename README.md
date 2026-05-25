@@ -271,8 +271,10 @@ Checks include:
 
 ## Connect with Me
 
-- **Portfolio:** [yourportfolio.com](https://yourportfolio.com)
-- **LinkedIn:** [linkedin.com/in/yourusername](https://linkedin.com/in/yourusername)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mike-nyambe-a3983b320) &nbsp; [![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=google-chrome&logoColor=white)](https://mikenyambe.com/public/index.php)
+
+- **LinkedIn:** [mike-nyambe-a3983b320](https://www.linkedin.com/in/mike-nyambe-a3983b320)
+- **Portfolio:** [mikenyambe.com](https://mikenyambe.com/public/index.php)
 
 ---
 
