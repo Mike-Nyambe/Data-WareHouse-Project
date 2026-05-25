@@ -43,6 +43,10 @@ The warehouse follows the **Medallion Architecture** — a layered approach popu
 | **Silver** | Cleanse, deduplicate, standardize types and business keys.              | Full load via stored procedures |
 | **Gold**   | Expose star-schema facts and dimensions as views for BI consumption.    | Views (no materialization) |
 
+### Medallion Architecture Diagram
+
+![Enterprise Data Lake: Medallion Architecture](docs/data_lake.jpg)
+
 ---
 
 ## Data Flow
@@ -85,10 +89,9 @@ Data-WareHouse-Project/
 │   └── quality_checks_gold.sql
 │
 ├── docs/                      # Diagrams, data dictionary, lineage
-│   ├── data_architecture.png
-│   ├── data_flow.png
-│   ├── data_model.png
-│   └── data_catalog.md
+│   ├── data_lake.jpg          # Enterprise Data Lake: Medallion Architecture diagram
+│   ├── etl.jpg                # The ETL Process: Comprehensive Guide diagram
+│   └── data_catalog.md        # Data dictionary and lineage
 │
 └── README.md
 ```
@@ -201,6 +204,10 @@ The project follows a small set of repeatable patterns so every layer behaves pr
 - **Explicit timing & logging.** Every procedure prints `PRINT` markers and uses `GETDATE()` diffs to surface load duration per table.
 - **Defensive transformation.** Trim, normalize casing, coerce types, and resolve nulls in Silver — never in Gold.
 - **Surrogate keys in Gold only.** Bronze/Silver preserve natural keys; Gold introduces surrogate keys at the view layer.
+
+### ETL Process Diagram
+
+![The ETL Process: Comprehensive Guide](docs/etl.jpg)
 
 ---
 
