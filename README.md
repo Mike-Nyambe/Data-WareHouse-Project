@@ -269,6 +269,13 @@ Checks include:
 
 ---
 
+## Connect with Me
+
+- **Portfolio:** [yourportfolio.com](https://yourportfolio.com)
+- **LinkedIn:** [linkedin.com/in/yourusername](https://linkedin.com/in/yourusername)
+
+---
+
 ## License
 
 This project is released under the [MIT License](LICENSE). It is intended for educational and portfolio use.
